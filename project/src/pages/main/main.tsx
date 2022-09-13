@@ -1,19 +1,14 @@
-import PlaceCard from '../../components/place-card/place-card';
+import Logo from '../../components/logo/logo';
+import OffersList from '../../components/offers-list/offers-list';
+import { PageCardClass } from '../../const';
+import { Offers } from '../../types/offers';
 
-type Props = {
-  places: number;
+type MainProps = {
+  offers: Offers;
 }
 
-function Main({ places }: Props): JSX.Element {
-  function getPlacesListCards(countCard: number) {
-    const placesCards: JSX.Element[] = [];
-
-    for (let i = 0; i < countCard; i++) {
-      placesCards.push(<PlaceCard key={i} />);
-    }
-
-    return placesCards;
-  }
+function Main({ offers }: MainProps): JSX.Element {
+  const offersCount = offers.length;
 
   return (
     <div className="page page--gray page--main">
@@ -21,9 +16,7 @@ function Main({ places }: Props): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a style={{pointerEvents: 'none'}} href="/" className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -88,9 +81,9 @@ function Main({ places }: Props): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{places} places to stay in Amsterdam</b>
+              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
+                <span className="places__sorting-caption">Sort by </span>
                 <span className="places__sorting-type" tabIndex={0}>
                   Popular
                   <svg className="places__sorting-arrow" width="7" height="4">
@@ -105,7 +98,10 @@ function Main({ places }: Props): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {getPlacesListCards(5)}
+                <OffersList
+                  offers={offers}
+                  cardClass={PageCardClass.Main}
+                />
               </div>
             </section>
             <div className="cities__right-section">
