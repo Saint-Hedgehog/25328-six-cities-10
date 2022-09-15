@@ -30,10 +30,7 @@ function App(props: AppProps): JSX.Element {
           </PrivateRoute>
         }
         />
-        <Route path={`${AppRoute.Room}/:id`} element={
-          <Property offers={offers} nearPlacesOffers={nearPlacesOffers} reviews={reviews} />
-        }
-        />
+        <Route path={`${AppRoute.Room}/:id`} element={<Property offers={offers} nearPlacesOffers={nearPlacesOffers} reviews={reviews}/>} />
         <Route path={AppRoute.NotFound} element={<NotFound />} />
       </Routes>
     </BrowserRouter>

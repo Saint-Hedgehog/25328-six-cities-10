@@ -18,10 +18,7 @@ function FavoriteOffersList({ offers, cardClass }: FavoriteOffersListProps): JSX
       {citiesOffers.map((items) => {
         const [city, cityOffers] = items;
         return (
-          <li
-            key={city}
-            className="favorites__locations-items"
-          >
+          <li key={city} className="favorites__locations-items" >
             <FavoriteCity city={city} />
             <div className="favorites__places">
               <OffersList offers={cityOffers} cardClass={cardClass} />

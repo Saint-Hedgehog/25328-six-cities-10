@@ -24,11 +24,7 @@ function OfferCard(props: OfferCardProps): JSX.Element {
   const { width, height } = imageSize;
 
   return (
-    <article
-      onMouseEnter={onActive}
-      onMouseLeave={onInactive}
-      className={`${cardClass}__card place-card`}
-    >
+    <article onMouseEnter={onActive} onMouseLeave={onInactive} className={`${cardClass}__card place-card`} >
       {
         isPremium ? (
           <div className="place-card__mark">
@@ -49,28 +45,14 @@ function OfferCard(props: OfferCardProps): JSX.Element {
         </Link>
       </div>
 
-      <div
-        className={`place-card__info ${isFavoriteStyle ? 'favorites__card-info' : ''}`}
-      >
+      <div className={`place-card__info ${isFavoriteStyle ? 'favorites__card-info' : ''}`} >
         <div className="place-card__price-wrapper">
           <Price pageClass={PageClass.OfferCard} price={price} />
-          <BookmarkButton
-            pageClass={PageClass.OfferCard}
-            isFavorite={isFavorite}
-          />
+          <BookmarkButton pageClass={PageClass.OfferCard} isFavorite={isFavorite} />
         </div>
-        <Rating
-          pageClass={PageClass.OfferCard}
-          rating={offer.rating}
-        />
+        <Rating pageClass={PageClass.OfferCard} rating={offer.rating} />
         <h2 className="place-card__name">
-
-          <Link
-            to={`${AppRoute.Room}/${id}`}
-          >
-            {title}
-          </Link>
-
+          <Link to={`${AppRoute.Room}/${id}`} >{title}</Link>
         </h2>
         <p className="place-card__type">{offerType}</p>
       </div>

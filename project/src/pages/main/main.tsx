@@ -2,6 +2,8 @@ import Logo from '../../components/logo/logo';
 import OffersList from '../../components/offers-list/offers-list';
 import { PageCardClass } from '../../const';
 import { Offers } from '../../types/offers';
+import Map from '../../components/map/map';
+import { City } from '../../mocks/offers';
 
 type MainProps = {
   offers: Offers;
@@ -105,7 +107,7 @@ function Main({ offers }: MainProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={City} offers={offers} />
             </div>
           </div>
         </div>
