@@ -1,8 +1,8 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { CommentForm } from '../../../types/reviews';
 import FormRatingInput from './form-rating-input/form-rating-input';
 
-function FormReview(): JSX.Element {
+const FormReview: React.FC = () => {
   const [review, setReview] = useState<CommentForm>({
     rating: null,
     comment: '',
@@ -47,6 +47,6 @@ function FormReview(): JSX.Element {
       </div>
     </form >
   );
-}
+};
 
 export default FormReview;

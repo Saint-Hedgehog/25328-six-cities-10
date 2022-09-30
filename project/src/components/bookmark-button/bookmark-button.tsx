@@ -1,3 +1,4 @@
+import React from 'react';
 import { PageClass, ButtonSize } from '../../const';
 
 type BookmarkButtonProps = {
@@ -5,7 +6,7 @@ type BookmarkButtonProps = {
   isFavorite: boolean;
 }
 
-function BookmarkButton({ pageClass, isFavorite }: BookmarkButtonProps): JSX.Element {
+const BookmarkButton: React.FC<BookmarkButtonProps> = ({ pageClass, isFavorite }) => {
   const buttonSize = pageClass === PageClass.OfferCard ? ButtonSize.Small : ButtonSize.Big;
   const { width, height } = buttonSize;
 
@@ -20,7 +21,7 @@ function BookmarkButton({ pageClass, isFavorite }: BookmarkButtonProps): JSX.Ele
       <span className="visually-hidden">To bookmarks</span>
     </button>
   );
-}
+};
 
 
 export default BookmarkButton;

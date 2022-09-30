@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import BookmarkButton from '../../components/bookmark-button/bookmark-button';
 import OffersList from '../../components/offers-list/offers-list';
@@ -15,25 +16,26 @@ import NotFound from '../not-found/not-found';
 import Price from '../../components/price/price';
 import PropertyFeatures from '../../components/property/property-features/property-features';
 import Logo from '../../components/logo/logo';
+import { useAppSelector } from '../../hooks';
 
 type PropertyProps = {
-  offers: Offers;
   nearPlacesOffers: Offers;
   reviews: Reviews
 }
 
-function Property({ offers, nearPlacesOffers, reviews }: PropertyProps): JSX.Element {
+const Property: React.FC<PropertyProps> = ({ nearPlacesOffers, reviews }) => {
+  const offers = useAppSelector((state) => state.offers);
   const { id } = useParams();
-  const offer = offers.find((item) => item.id === Number(id));
+  const activeOffer = offers.find((offer) => offer.id === Number(id));
   const reviewsCount = reviews.length;
 
-  if (!offer) {
+  if (!activeOffer) {
     return <NotFound />;
   }
 
-  const images = offer.images.slice(ImagePropertyCount.Start, ImagePropertyCount.End);
+  const images = activeOffer.images.slice(ImagePropertyCount.Start, ImagePropertyCount.End);
 
-  const { type, isPremium, title, price, bedrooms, maxAdults, goods, description } = offer;
+  const { type, isPremium, title, price, bedrooms, maxAdults, goods, description, isFavorite, rating } = activeOffer;
   const offerType = capitalizeFirstLetter(type);
 
   return (
@@ -83,13 +85,13 @@ function Property({ offers, nearPlacesOffers, reviews }: PropertyProps): JSX.Ele
               }
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
-                <BookmarkButton pageClass={PageClass.Property} isFavorite={offer.isFavorite} />
+                <BookmarkButton pageClass={PageClass.Property} isFavorite={isFavorite} />
               </div>
-              <Rating pageClass={PageClass.Property} rating={offer.rating} />
+              <Rating pageClass={PageClass.Property} rating={rating} />
               <PropertyFeatures offerType={offerType} bedrooms={bedrooms} maxAdults={maxAdults} />
               <Price pageClass={PageClass.Property} price={price} />
               <PropertyInside goods={goods} />
-              <PropertyHost host={offer.host} description={description} />
+              <PropertyHost host={activeOffer.host} description={description} />
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
                 <UserReview reviews={reviews} />
@@ -110,6 +112,6 @@ function Property({ offers, nearPlacesOffers, reviews }: PropertyProps): JSX.Ele
       </main>
     </div>
   );
-}
+};
 
 export default Property;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { PageClass } from '../../const';
 import { getCountStars } from '../../utils/utils';
 
@@ -6,7 +7,7 @@ type RatingProps = {
   pageClass: PageClass,
 }
 
-function Rating({ rating, pageClass}: RatingProps): JSX.Element {
+const Rating: React.FC<RatingProps> = ({ rating, pageClass}) => {
   const countStars = getCountStars(rating);
 
   return (
@@ -22,6 +23,6 @@ function Rating({ rating, pageClass}: RatingProps): JSX.Element {
       }
     </div>
   );
-}
+};
 
 export default Rating;

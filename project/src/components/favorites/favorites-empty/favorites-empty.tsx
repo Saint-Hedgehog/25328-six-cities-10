@@ -1,8 +1,8 @@
 import React from 'react';
-import Logo from '../../components/logo/logo';
+import Logo from '../../logo/logo';
 
-const NotFound: React.FC = () => (
-  <div className="page page--gray page--main">
+const FavoritesEmpty: React.FC = () => (
+  <div className="page page--favorites-empty">
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
@@ -16,7 +16,7 @@ const NotFound: React.FC = () => (
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
                   <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
+                  <span className="header__favorite-count">0</span>
                 </a>
               </li>
               <li className="header__nav-item">
@@ -30,22 +30,24 @@ const NotFound: React.FC = () => (
       </div>
     </header>
 
-    <main className="page__main page__main--index page__main--index-empty">
-      <div className="cities">
-        <div className="cities__places-container cities__places-container--empty container">
-          <section className="cities__no-places">
-            <div className="cities__status-wrapper tabs__content">
-              <h1>404.
-                <br />
-                <small>Page not found</small>
-              </h1>
-            </div>
-          </section>
-          <div className="cities__right-section"></div>
-        </div>
+    <main className="page__main page__main--favorites page__main--favorites-empty">
+      <div className="page__favorites-container container">
+        <section className="favorites favorites--empty">
+          <h1 className="visually-hidden">Favorites (empty)</h1>
+          <div className="favorites__status-wrapper">
+            <b className="favorites__status">Nothing yet saved.</b>
+            <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+          </div>
+        </section>
       </div>
     </main>
+    <footer className="footer">
+      <a className="footer__logo-link" href="main.html">
+        <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
+      </a>
+    </footer>
   </div>
 );
 
-export default NotFound;
+
+export default FavoritesEmpty;

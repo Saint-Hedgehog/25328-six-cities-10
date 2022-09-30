@@ -1,11 +1,12 @@
-import {Host} from '../../../types/offers';
+import React from 'react';
+import { Host } from '../../../types/offers';
 
 type PropertyHostProps = {
   host: Host;
   description: string;
 };
 
-function PropertyHost({ host, description }: PropertyHostProps) {
+const PropertyHost: React.FC<PropertyHostProps> = ({ host, description }) => {
   const { avatarUrl, name, isPro} = host;
 
   return (
@@ -31,6 +32,6 @@ function PropertyHost({ host, description }: PropertyHostProps) {
       </div>
     </div>
   );
-}
+};
 
 export default PropertyHost;

@@ -1,17 +1,19 @@
+import React from 'react';
+
 type FavoriteCityProps = {
   city: string;
 }
+const FavoriteCity: React.FC<FavoriteCityProps> = ({ city }) => (
+  <div className="favorites__locations locations locations--current">
+    <div className="locations__item">
 
-function FavoriteCity({ city }: FavoriteCityProps): JSX.Element {
-  return (
-    <div className="favorites__locations locations locations--current">
-      <div className="locations__item">
-        <a className="locations__item-link" href="/">
-          <span>{city}</span>
-        </a>
-      </div>
+      <a className="locations__item-link" href="/">
+        <span>{city}</span>
+      </a>
+
     </div>
-  );
-}
+  </div>
+);
+
 
 export default FavoriteCity;

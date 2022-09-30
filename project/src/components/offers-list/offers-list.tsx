@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { PageCardClass } from '../../const';
 import { Offers } from '../../types/offers';
 import OfferCard from './offer-card/offer-card';
@@ -9,7 +9,7 @@ type OffersListProps = {
   cardClass: PageCardClass;
 };
 
-function OffersList({ offers, cardClass }: OffersListProps): JSX.Element {
+const OffersList: React.FC<OffersListProps> = ({ offers, cardClass }) => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   // Заглушка для переменной activeCard
@@ -20,16 +20,10 @@ function OffersList({ offers, cardClass }: OffersListProps): JSX.Element {
   return (
     <Fragment>
       {offers.map((offer) => (
-        <OfferCard
-          key={offer.id}
-          offer={offer}
-          cardClass={cardClass}
-          onActive={() => setActiveCard(offer.id)}
-          onInactive={() => setActiveCard(null)}
-        />)
+        <OfferCard key={offer.id} offer={offer} cardClass={cardClass} onActive={() => setActiveCard(offer.id)} onInactive={() => setActiveCard(null)}/>)
       )}
     </Fragment>
   );
-}
+};
 
 export default OffersList;

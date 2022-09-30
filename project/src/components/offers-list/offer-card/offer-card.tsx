@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { PageCardClass, AppRoute, ImageSize, PageClass } from '../../../const';
 import { Offer } from '../../../types/offers';
@@ -6,7 +7,6 @@ import BookmarkButton from '../../bookmark-button/bookmark-button';
 import Price from '../../price/price';
 import Rating from '../../rating/rating';
 
-
 type OfferCardProps = {
   offer: Offer;
   cardClass: PageCardClass;
@@ -14,7 +14,7 @@ type OfferCardProps = {
   onInactive?: () => void;
 };
 
-function OfferCard(props: OfferCardProps): JSX.Element {
+const OfferCard: React.FC<OfferCardProps> = (props) => {
   const { offer, cardClass, onActive, onInactive } = props;
   const { id, type, isPremium, previewImage, title, price, isFavorite } = offer;
 
@@ -35,13 +35,7 @@ function OfferCard(props: OfferCardProps): JSX.Element {
 
       <div className={`${cardClass}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Room}/${id}`}>
-          <img
-            className="place-card__image"
-            src={previewImage}
-            width={width}
-            height={height}
-            alt={title}
-          />
+          <img className="place-card__image" src={previewImage} width={width} height={height} alt={title}/>
         </Link>
       </div>
 
@@ -58,6 +52,6 @@ function OfferCard(props: OfferCardProps): JSX.Element {
       </div>
     </article>
   );
-}
+};
 
 export default OfferCard;

@@ -1,47 +1,39 @@
-import { Icon, Marker } from 'leaflet';
-import { useEffect, useRef } from 'react';
-import { IconParameter, UrlMarker } from '../../const';
-import { City, Offers } from '../../types/offers';
-import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
+import { Marker } from 'leaflet';
+import React, { useRef } from 'react';
+import { City } from '../../const';
+import { Offers } from '../../types/offers';
+import { getActiveCityLocation } from '../../utils/utils';
+import useMap from '../../hooks/useMap';
+import useChangeLocation from '../../hooks/useChangeLocation';
+import useMarker from '../../hooks/useMarker';
 
 type MapProps = {
-  city: City;
-  offers: Offers;
+  activeCity: City;
+  activeCityOffers: Offers;
 };
 
-const defaultCustomIcon = new Icon({
-  iconUrl: UrlMarker.Default,
-  iconSize: [IconParameter.Size.x, IconParameter.Size.y],
-  iconAnchor: [IconParameter.Anchor.x, IconParameter.Anchor.y],
-});
-
-function Map(props: MapProps): JSX.Element {
-  const { city, offers } = props;
-
+const Map: React.FC<MapProps> = (props) => {
+  const { activeCityOffers, activeCity } = props;
+  const activeCityLocation = getActiveCityLocation(activeCity, activeCityOffers);
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, activeCityLocation);
+  const prevActiveCityRef = useRef<City>(activeCity);
+  const prevMarkersRef = useRef<Marker[]>([]);
 
-  useEffect(() => {
-    if (map) {
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude
-        });
+  useChangeLocation(
+    prevActiveCityRef,
+    prevMarkersRef,
+    activeCity,
+    activeCityLocation,
+    map
+  );
 
-        marker
-          .setIcon(
-            defaultCustomIcon
-          )
-          .addTo(map);
-      });
-    }
-  }, [map, offers]);
+  useMarker(prevMarkersRef, activeCityOffers, map);
 
   return (
     <section className="cities__map map" ref={mapRef}></section>
   );
-}
+};
 
 export default Map;

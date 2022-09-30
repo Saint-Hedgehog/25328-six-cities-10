@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React from 'react';
 import { PageCardClass } from '../../../const';
 import { Offers } from '../../../types/offers';
 import { getCitiesOffers } from '../../../utils/utils';
@@ -10,13 +10,14 @@ type FavoriteOffersListProps = {
   cardClass: PageCardClass;
 }
 
-function FavoriteOffersList({ offers, cardClass }: FavoriteOffersListProps): JSX.Element {
+const FavoriteOffersList: React.FC<FavoriteOffersListProps> = ({ offers, cardClass }) => {
   const citiesOffers = getCitiesOffers(offers);
 
   return (
-    <Fragment>
+    <ul className="favorites__list">
       {citiesOffers.map((items) => {
         const [city, cityOffers] = items;
+
         return (
           <li key={city} className="favorites__locations-items" >
             <FavoriteCity city={city} />
@@ -26,8 +27,8 @@ function FavoriteOffersList({ offers, cardClass }: FavoriteOffersListProps): JSX
           </li>);
       }
       )}
-    </Fragment >
+    </ul >
   );
-}
+};
 
 export default FavoriteOffersList;
