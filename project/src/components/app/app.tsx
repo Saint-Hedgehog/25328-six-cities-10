@@ -1,6 +1,6 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { Routes, Route } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
@@ -11,6 +11,8 @@ import { Offers } from '../../types/offers';
 import { Reviews } from '../../types/reviews';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading/loading';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 type AppProps = {
   favoriteOffers: Offers;
@@ -20,7 +22,6 @@ type AppProps = {
 
 const App: React.FC<AppProps> = (props) => {
   const { favoriteOffers, nearPlacesOffers, reviews } = props;
-
   const isDataLoaded = useAppSelector((state) => state.isDataLoaded);
 
   if (isDataLoaded) {
@@ -28,12 +29,12 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path={AppRoute.Main} element={<Main />} />
         <Route path={AppRoute.Login} element={<Login />} />
         <Route path={AppRoute.Favorites} element={
-          <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+          <PrivateRoute>
             <Favorites offers={favoriteOffers} />
           </PrivateRoute>
         }
@@ -41,7 +42,7 @@ const App: React.FC<AppProps> = (props) => {
         <Route path={`${AppRoute.Room}/:id`} element={<Property nearPlacesOffers={nearPlacesOffers} reviews={reviews} />} />
         <Route path={AppRoute.NotFound} element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 };
 
