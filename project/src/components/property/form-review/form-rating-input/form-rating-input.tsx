@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
-import { inputRatingOption } from '../../../../const';
+import { InputRatingOption } from '../../../../const';
 
 const FormRatingInput: React.FC = () => (
   <Fragment>
-    {inputRatingOption.map((option) => (
+    {InputRatingOption.map((option) => (
       <Fragment key={option.rating}>
         <input
           className="form__rating-input visually-hidden"

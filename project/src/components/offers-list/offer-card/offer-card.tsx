@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { PageCardClass, AppRoute, ImageSize, PageClass } from '../../../const';
 import { Offer } from '../../../types/offers';
@@ -10,12 +10,13 @@ import Rating from '../../rating/rating';
 type OfferCardProps = {
   offer: Offer;
   cardClass: PageCardClass;
-  onActive?: () => void;
-  onInactive?: () => void;
+  onActiveCard?: (value: number | null) => void;
 };
 
+const TIMER = 500;
+
 const OfferCard: React.FC<OfferCardProps> = (props) => {
-  const { offer, cardClass, onActive, onInactive } = props;
+  const { offer, cardClass, onActiveCard } = props;
   const { id, type, isPremium, previewImage, title, price, isFavorite } = offer;
 
   const offerType = capitalizeFirstLetter(type);
@@ -23,8 +24,28 @@ const OfferCard: React.FC<OfferCardProps> = (props) => {
   const imageSize = isFavoriteStyle ? ImageSize.Small : ImageSize.Big;
   const { width, height } = imageSize;
 
+  const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  const handleActiveCard = () => {
+    if (onActiveCard !== undefined) {
+      timerRef.current = setTimeout(() => onActiveCard(offer.id), TIMER);
+    }
+  };
+
+  const handleInactiveCard = () => {
+    if (onActiveCard !== undefined) {
+      onActiveCard(null);
+      clearTimeout(timerRef.current);
+    }
+  };
+
+  useEffect(
+    () =>
+      () =>
+        clearTimeout(timerRef.current), []);
+
   return (
-    <article onMouseEnter={onActive} onMouseLeave={onInactive} className={`${cardClass}__card place-card`} >
+    <article onMouseEnter={handleActiveCard} onMouseLeave={handleInactiveCard} className={`${cardClass}__card place-card`} >
       {
         isPremium ? (
           <div className="place-card__mark">

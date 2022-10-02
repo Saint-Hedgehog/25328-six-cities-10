@@ -37,6 +37,30 @@ export enum ImagePropertyCount {
   End = 6,
 }
 
+export enum NameSpace {
+  App = 'APP',
+  Data = 'DATA',
+  User = 'USER'
+}
+
+export enum City {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf'
+}
+
+export const CityName = [
+  City.Paris,
+  City.Cologne,
+  City.Brussels,
+  City.Amsterdam,
+  City.Hamburg,
+  City.Dusseldorf
+] as const;
+
 export const ImageSize = {
   Big: {
     height: 200,
@@ -62,7 +86,7 @@ export const ButtonSize = {
 export const Month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
   'August', 'September', 'October', 'November', 'December'] as const;
 
-export const inputRatingOption = [
+export const InputRatingOption = [
   { rating: 5, title: 'perfect' },
   { rating: 4, title: 'good' },
   { rating: 3, title: 'not bad' },
@@ -72,7 +96,8 @@ export const inputRatingOption = [
 
 export const UrlMarker = {
   Default: 'img/pin.svg',
-  Current: 'img/pin-active.svg'
+  Current: 'img/pin-active.svg',
+  Active: 'img/pin-active.svg'
 } as const;
 
 export const IconParameter = {
@@ -86,26 +111,14 @@ export const IconParameter = {
   }
 } as const;
 
-export enum City {
-  Paris = 'Paris',
-  Cologne = 'Cologne',
-  Brussels = 'Brussels',
-  Amsterdam = 'Amsterdam',
-  Hamburg = 'Hamburg',
-  Dusseldorf = 'Dusseldorf'
-}
-
-export const city = [
-  City.Paris,
-  City.Cologne,
-  City.Brussels,
-  City.Amsterdam,
-  City.Hamburg,
-  City.Dusseldorf
-] as const;
-
 export const defaultCustomIcon = new Icon({
   iconUrl: UrlMarker.Default,
+  iconSize: [IconParameter.Size.x, IconParameter.Size.y],
+  iconAnchor: [IconParameter.Anchor.x, IconParameter.Anchor.y],
+});
+
+export const activeCustomIcon = new Icon({
+  iconUrl: UrlMarker.Active,
   iconSize: [IconParameter.Size.x, IconParameter.Size.y],
   iconAnchor: [IconParameter.Anchor.x, IconParameter.Anchor.y],
 });

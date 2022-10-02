@@ -13,6 +13,7 @@ import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading/loading';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { getDataLoadedStatus } from '../../store/app-data/selectors';
 
 type AppProps = {
   favoriteOffers: Offers;
@@ -22,7 +23,7 @@ type AppProps = {
 
 const App: React.FC<AppProps> = (props) => {
   const { favoriteOffers, nearPlacesOffers, reviews } = props;
-  const isDataLoaded = useAppSelector((state) => state.isDataLoaded);
+  const isDataLoaded = useAppSelector(getDataLoadedStatus);
 
   if (isDataLoaded) {
     return <LoadingScreen />;

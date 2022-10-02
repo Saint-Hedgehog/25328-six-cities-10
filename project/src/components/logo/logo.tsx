@@ -6,9 +6,9 @@ type Props = {
   isFooter?: boolean;
 };
 
-const Logo: React.FC<Props> = ({isFooter}) => {
-  const location = useLocation();
-  const isBaseName = location.pathname.length === 1;
+const Logo: React.FC<Props> = ({ isFooter }) => {
+  const currentPath = useLocation().pathname;
+  const logoParameter = currentPath === AppRoute.Main ? 'none' : 'auto';
   const linkClass = isFooter ? 'footer__logo-link' : 'header__logo-link';
   const imgClass = isFooter ? 'footer__logo' : 'header__logo';
   const imgWidth = isFooter ? '64' : '81';
@@ -16,15 +16,9 @@ const Logo: React.FC<Props> = ({isFooter}) => {
 
   return (
     <div className="logo">
-      {isBaseName ? (
-        <Link to={AppRoute.Main} style={{ pointerEvents: 'none' }} className={linkClass}>
-          <img className={imgClass} src="img/logo.svg" alt="6 cities logo" width={imgWidth} height={imgHeight} />
-        </Link>
-      ) : (
-        <Link to={AppRoute.Main} className={linkClass}>
-          <img className={imgClass} src="img/logo.svg" alt="6 cities logo" width={imgWidth} height={imgHeight} />
-        </Link>
-      )}
+      <Link to={AppRoute.Main} style={{ pointerEvents: logoParameter }} className={linkClass}>
+        <img className={imgClass} src="img/logo.svg" alt="6 cities logo" width={imgWidth} height={imgHeight} />
+      </Link>
     </div>
   );
 };

@@ -1,15 +1,16 @@
 import React from 'react';
 import { PageCardClass } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getActiveCityOffers } from '../../utils/utils';
 import MainOffersEmpty from '../../components/main/main-offers-empty/main-offers-empty';
 import MainOffers from '../../components/main/main-offers/main-offers';
 import CitiesTabs from '../../components/main/cities-tabs/cities-tabs';
 import Header from '../../components/header/header';
+import { filterActiveCityOffers } from '../../store/app-data/selectors';
+import { getActiveCity } from '../../store/app-process/selectors';
 
 const Main: React.FC = () => {
-  const { offers, activeCity } = useAppSelector((state) => state);
-  const activeCityOffers = getActiveCityOffers(activeCity, offers);
+  const activeCity = useAppSelector(getActiveCity);
+  const activeCityOffers = useAppSelector(filterActiveCityOffers);
   const offersCount = activeCityOffers.length;
   const isEmptyOffers = !offersCount;
 

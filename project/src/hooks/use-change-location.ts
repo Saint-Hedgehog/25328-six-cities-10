@@ -13,11 +13,8 @@ const useChangeLocation = (
 
   useEffect(() => {
     if (prevActiveCityRef.current !== activeCity && map) {
-
       prevActiveCityRef.current = activeCity;
-
       prevMarkersRef.current.forEach((marker) => marker.remove());
-
       prevMarkersRef.current = [];
 
       map.setView(
