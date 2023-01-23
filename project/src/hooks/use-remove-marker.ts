@@ -1,7 +1,6 @@
 import { Marker, Map } from 'leaflet';
 import { MutableRefObject, useEffect } from 'react';
 
-
 const useRemoveMarker = (
   prevMarkersRef: MutableRefObject<Marker[]>,
   map: Map | null,

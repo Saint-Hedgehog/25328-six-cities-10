@@ -2,9 +2,9 @@ import React from 'react';
 import { PageClass } from '../../const';
 
 type PriceProps = {
-  price: number;
+  price: number,
   pageClass: PageClass,
-}
+};
 
 const Rating: React.FC<PriceProps> = ({ price, pageClass }) => (
   <div className={`${pageClass}__price`}>

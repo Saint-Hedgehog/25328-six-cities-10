@@ -3,17 +3,17 @@ import { PageClass } from '../../const';
 import { getCountStars } from '../../utils/utils';
 
 type RatingProps = {
-  rating: number;
-  pageClass: PageClass,
-}
+  rating: number,
+  pageClass: PageClass
+};
 
 const Rating: React.FC<RatingProps> = ({ rating, pageClass}) => {
-  const countStars = getCountStars(rating);
+  const starsCount = getCountStars(rating);
 
   return (
     <div className={`${pageClass}__rating rating`}>
       <div className={`${pageClass}__stars rating__stars`}>
-        <span style={{ width: countStars }}></span>
+        <span style={{ width: starsCount }}></span>
         <span className="visually-hidden">Rating</span>
       </div>
       {

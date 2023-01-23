@@ -1,14 +1,17 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, City, LinkParameter } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { setActiveCity } from '../../store/app-process/app-process';
 
 type Props = {
-  isFooter?: boolean;
+  isFooter?: boolean,
 };
 
 const Logo: React.FC<Props> = ({ isFooter }) => {
+  const dispatch = useAppDispatch();
   const currentPath = useLocation().pathname;
-  const logoParameter = currentPath === AppRoute.Main ? 'none' : 'auto';
+  const linkParameter = currentPath === AppRoute.Main ? LinkParameter.Disabled : LinkParameter.Active;
   const linkClass = isFooter ? 'footer__logo-link' : 'header__logo-link';
   const imgClass = isFooter ? 'footer__logo' : 'header__logo';
   const imgWidth = isFooter ? '64' : '81';
@@ -16,11 +19,18 @@ const Logo: React.FC<Props> = ({ isFooter }) => {
 
   return (
     <div className="logo">
-      <Link to={AppRoute.Main} style={{ pointerEvents: logoParameter }} className={linkClass}>
+      <Link
+        onClick={() => {
+          dispatch(setActiveCity(City.Paris));
+        }}
+        style={{ pointerEvents: linkParameter }}
+        to={AppRoute.Main}
+        className={linkClass}
+      >
         <img className={imgClass} src="img/logo.svg" alt="6 cities logo" width={imgWidth} height={imgHeight} />
       </Link>
     </div>
   );
 };
 
-export default Logo;
+export default React.memo(Logo);

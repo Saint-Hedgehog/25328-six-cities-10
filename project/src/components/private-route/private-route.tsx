@@ -5,8 +5,8 @@ import { useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type PrivateRouteProps = {
-  children: JSX.Element;
-}
+  children: JSX.Element
+};
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);

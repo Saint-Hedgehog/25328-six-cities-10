@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { PageCardClass, AppRoute, ImageSize, PageClass } from '../../../const';
+import { PageCardClass, AppRoute, ImageSize, PageClass, Timer } from '../../../const';
 import { Offer } from '../../../types/offers';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import BookmarkButton from '../../bookmark-button/bookmark-button';
@@ -8,27 +9,26 @@ import Price from '../../price/price';
 import Rating from '../../rating/rating';
 
 type OfferCardProps = {
-  offer: Offer;
-  cardClass: PageCardClass;
-  onActiveCard?: (value: number | null) => void;
+  offer: Offer,
+  cardClass: PageCardClass,
+  onActiveCard?: (value: number | null) => void
 };
-
-const TIMER = 500;
 
 const OfferCard: React.FC<OfferCardProps> = (props) => {
   const { offer, cardClass, onActiveCard } = props;
-  const { id, type, isPremium, previewImage, title, price, isFavorite } = offer;
+  const { id, type, isPremium, previewImage, title, price, rating } = offer;
 
   const offerType = capitalizeFirstLetter(type);
   const isFavoriteStyle = cardClass === PageCardClass.Favorite;
   const imageSize = isFavoriteStyle ? ImageSize.Small : ImageSize.Big;
   const { width, height } = imageSize;
+  const cardInfoClass = classNames('place-card__info', {'favorites__card-info': isFavoriteStyle});
 
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const handleActiveCard = () => {
     if (onActiveCard !== undefined) {
-      timerRef.current = setTimeout(() => onActiveCard(offer.id), TIMER);
+      timerRef.current = setTimeout(() => onActiveCard(id), Timer.OfferCard);
     }
   };
 
@@ -36,23 +36,25 @@ const OfferCard: React.FC<OfferCardProps> = (props) => {
     if (onActiveCard !== undefined) {
       onActiveCard(null);
       clearTimeout(timerRef.current);
+      timerRef.current = undefined;
     }
   };
 
   useEffect(
     () =>
-      () =>
-        clearTimeout(timerRef.current), []);
+      () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+      }, []);
 
   return (
     <article onMouseEnter={handleActiveCard} onMouseLeave={handleInactiveCard} className={`${cardClass}__card place-card`} >
-      {
-        isPremium ? (
-          <div className="place-card__mark">
-            <span>Premium</span>
-          </div>
-        ) : null
-      }
+      {isPremium ? (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      ) : null}
 
       <div className={`${cardClass}__image-wrapper place-card__image-wrapper`}>
         <Link to={`${AppRoute.Room}/${id}`}>
@@ -60,12 +62,12 @@ const OfferCard: React.FC<OfferCardProps> = (props) => {
         </Link>
       </div>
 
-      <div className={`place-card__info ${isFavoriteStyle ? 'favorites__card-info' : ''}`} >
+      <div className={cardInfoClass}>
         <div className="place-card__price-wrapper">
           <Price pageClass={PageClass.OfferCard} price={price} />
-          <BookmarkButton pageClass={PageClass.OfferCard} isFavorite={isFavorite} />
+          <BookmarkButton buttonClass={PageClass.OfferCard} offerId={offer.id} favoriteStatus={offer.isFavorite} />
         </div>
-        <Rating pageClass={PageClass.OfferCard} rating={offer.rating} />
+        <Rating pageClass={PageClass.OfferCard} rating={rating} />
         <h2 className="place-card__name">
           <Link to={`${AppRoute.Room}/${id}`} >{title}</Link>
         </h2>

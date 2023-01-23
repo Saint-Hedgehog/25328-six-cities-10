@@ -1,5 +1,8 @@
 import { Icon } from 'leaflet';
 
+export const TOAST_TYPE = 'success';
+export const DEFAULT_CITY = 'Paris';
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -9,9 +12,12 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Offers = '/hotels',
+  Offer = '/hotels',
   Login = '/login',
   Logout = '/logout',
+  Nearby = 'nearby',
+  Comment = '/comments',
+  Favorite = '/favorite'
 }
 
 export enum AuthorizationStatus {
@@ -32,15 +38,23 @@ export enum PageClass {
   Reviews = 'reviews'
 }
 
-export enum ImagePropertyCount {
+export enum MapClass {
+  Main = 'cities__map map',
+  Property = 'property__map map'
+}
+
+export enum ImageLimit {
   Start = 0,
   End = 6,
 }
 
 export enum NameSpace {
   App = 'APP',
-  Data = 'DATA',
-  User = 'USER'
+  OfferList = 'OFFER_LIST',
+  Offer = 'OFFER',
+  Review = 'REVIEW',
+  Favorite = 'FAVORITE',
+  User = 'USER',
 }
 
 export enum City {
@@ -52,7 +66,7 @@ export enum City {
   Dusseldorf = 'Dusseldorf'
 }
 
-export const CityName = [
+export const CityTitle = [
   City.Paris,
   City.Cologne,
   City.Brussels,
@@ -122,3 +136,91 @@ export const activeCustomIcon = new Icon({
   iconSize: [IconParameter.Size.x, IconParameter.Size.y],
   iconAnchor: [IconParameter.Anchor.x, IconParameter.Anchor.y],
 });
+
+export enum SortType {
+  Popular = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHighToLow = 'Price: high to low',
+  TopRatedFirst = 'Top rated first'
+}
+
+export const sortType = [
+  SortType.Popular,
+  SortType.PriceLowToHigh,
+  SortType.PriceHighToLow,
+  SortType.TopRatedFirst
+] as const;
+
+export const TextLength = {
+  Min: 50,
+  Max: 300
+} as const;
+
+export const ButtonName = {
+  Submit: 'Submit',
+  SignIn: 'Sign in',
+  Sending: 'Sending...',
+};
+
+export const Timer = {
+  OfferCard: 500,
+  FormReview: 2000,
+  Login: 2000,
+  Logout: 3000,
+  ToastClose: 3000,
+  Favorite: 2500
+} as const;
+
+export const Pattern = {
+  Email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+  Password: /^(?=.*[A-Za-z])(?!.* )(?=.*\d).{1,}$/
+};
+
+export const ToastText = {
+  SuccessLogged: 'You are successfully logged in!',
+  ReviewAdded: 'Review successfully added!'
+} as const;
+
+export const LogoutText = {
+  SignOut: 'Sign out',
+  Exiting: 'Exiting...'
+} as const;
+
+export const LinkParameter = {
+  Disabled: 'none',
+  Active: 'auto'
+} as const;
+
+export const CursorParameter = {
+  Disabled: 'default',
+  Active: 'pointer'
+} as const;
+
+export const FavoriteAction = {
+  Add: 1,
+  Delete: 0
+} as const;
+
+export const FavoriteActionInfo = {
+  Add: 'Successfully added to favorite!',
+  Removed: 'Successfully removed from favorite!',
+  Loading: 'Please wait...',
+} as const;
+
+export const RequestStatus = {
+  Fulfilled: 'fulfilled',
+  Rejected: 'rejected'
+} as const;
+
+export const ValidationMessage = {
+  Email: {
+    Required: 'Must be E-mail (e.g. name@example.com)',
+    Pattern: 'Enter valid E-mail (e.g. name@example.com)',
+    Title: 'Must be E-mail (e.g. name@example.com)',
+  },
+  Password: {
+    Required: 'Must be entered Password',
+    Pattern: 'Password must contain Letters and Numbers. Min 2 chatacters. No Spaces.',
+    Title: 'Password must contain Letters and Numbers. Min 2 chatacters. No Spaces.',
+  }
+} as const;

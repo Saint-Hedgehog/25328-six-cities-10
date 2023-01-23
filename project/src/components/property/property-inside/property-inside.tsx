@@ -1,8 +1,8 @@
 import React from 'react';
 
 type PropertyInsideProps = {
-  goods: string[];
-}
+  goods: string[]
+};
 
 const PropertyInside: React.FC<PropertyInsideProps> = ({ goods }) => (
   <div className="property__inside">
@@ -11,8 +11,7 @@ const PropertyInside: React.FC<PropertyInsideProps> = ({ goods }) => (
       {goods.map((service) => (
         <li key={service} className="property__inside-item">
           {service}
-        </li>
-      )
+        </li>)
       )}
     </ul>
   </div>

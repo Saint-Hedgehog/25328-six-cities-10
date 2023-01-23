@@ -1,43 +1,66 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { PageClass, PageCardClass, MapClass } from '../../const';
+import { fetchOfferAction, fetchNearOffersAction, fetchRewiesAction } from '../../store/api-actions';
+import { getOffer, getNearOffers, getOfferDataLoadStatus } from '../../store/offer-data/selectors';
+import { clearOfferData, setOfferDataLoadStatus } from '../../store/offer-data/offer-data';
+import { getActiveCity } from '../../store/app-process/selectors';
+import { clearReviewData } from '../../store/review-data/review-data';
+import { getReviews } from '../../store/review-data/selectors';
 import BookmarkButton from '../../components/bookmark-button/bookmark-button';
 import OffersList from '../../components/offers-list/offers-list';
-import FormReview from '../../components/property/form-review/form-review';
 import PropertyHost from '../../components/property/property-host/property-host';
 import PropertyInside from '../../components/property/property-inside/property-inside';
-import PropertyImage from '../../components/property/property-image/property-image';
-import UserReview from '../../components/property/user-review/user-review';
 import Rating from '../../components/rating/rating';
-import { PageClass, ImagePropertyCount, PageCardClass } from '../../const';
-import { Offers } from '../../types/offers';
-import { Reviews } from '../../types/reviews';
-import { capitalizeFirstLetter } from '../../utils/utils';
-import NotFound from '../not-found/not-found';
 import Price from '../../components/price/price';
 import PropertyFeatures from '../../components/property/property-features/property-features';
-import { useAppSelector } from '../../hooks';
 import Header from '../../components/header/header';
-import { getOffers } from '../../store/app-data/selectors';
+import Map from '../../components/map/map';
+import ImagesList from '../../components/property/images-list/images-list';
+import PropertyReviews from '../../components/property/property-review/property-review';
+import Loading from '../loading/loading';
+import NotFound from '../not-found/not-found';
 
-type PropertyProps = {
-  nearPlacesOffers: Offers;
-  reviews: Reviews
-}
-
-const Property: React.FC<PropertyProps> = ({ nearPlacesOffers, reviews }) => {
-  const offers = useAppSelector(getOffers);
+const Property: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
-  const activeOffer = offers.find((offer) => offer.id === Number(id));
-  const reviewsCount = reviews.length;
 
-  if (!activeOffer) {
+  useEffect(() => {
+    const promiseOffer = dispatch(fetchOfferAction(id));
+    const promiseNearOffers = dispatch(fetchNearOffersAction(id));
+    const promiseReviews = dispatch(fetchRewiesAction(id));
+
+    Promise.allSettled([promiseOffer, promiseNearOffers, promiseReviews])
+      .then(() => dispatch(setOfferDataLoadStatus(false)));
+
+    return () => {
+      promiseOffer.abort();
+      promiseNearOffers.abort();
+      promiseReviews.abort();
+      dispatch(clearOfferData());
+      dispatch(clearReviewData());
+    };
+  }, [id, dispatch]);
+
+  const activeCity = useAppSelector(getActiveCity);
+  const activeOffer = useAppSelector(getOffer);
+  const nearOffers = useAppSelector(getNearOffers);
+  const reviews = useAppSelector(getReviews);
+
+  const isDataLoading = useAppSelector(getOfferDataLoadStatus);
+  const isNotFoundOffer = activeOffer === null;
+
+  if (isDataLoading) {
+    return <Loading />;
+  }
+
+  if (isNotFoundOffer) {
     return <NotFound />;
   }
 
-  const images = activeOffer.images.slice(ImagePropertyCount.Start, ImagePropertyCount.End);
-
-  const { type, isPremium, title, price, bedrooms, maxAdults, goods, description, isFavorite, rating } = activeOffer;
-  const offerType = capitalizeFirstLetter(type);
+  const offersList = [activeOffer, ...nearOffers];
+  const { type, isPremium, title, price, bedrooms, maxAdults, goods, description, isFavorite, rating, images, host } = activeOffer;
 
   return (
     <div className="page">
@@ -45,43 +68,33 @@ const Property: React.FC<PropertyProps> = ({ nearPlacesOffers, reviews }) => {
 
       <main className="page__main page__main--property">
         <section className="property">
-          <div className="property__gallery-container container">
-            <div className="property__gallery">
-              {images.map((src) => <PropertyImage key={src} src={src} />)}
-            </div>
-          </div>
+          <ImagesList imagesList={images} />
           <div className="property__container container">
             <div className="property__wrapper">
-              {
-                isPremium ? (
-                  <div className="property__mark">
-                    <span>Premium</span>
-                  </div>
-                ) : null
-              }
+              {isPremium ? (
+                <div className="property__mark">
+                  <span>Premium</span>
+                </div>
+              ) : null}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
-                <BookmarkButton pageClass={PageClass.Property} isFavorite={isFavorite} />
+                <BookmarkButton buttonClass={PageClass.Property} offerId={activeOffer.id} favoriteStatus={isFavorite}/>
               </div>
               <Rating pageClass={PageClass.Property} rating={rating} />
-              <PropertyFeatures offerType={offerType} bedrooms={bedrooms} maxAdults={maxAdults} />
+              <PropertyFeatures type={type} bedrooms={bedrooms} maxAdults={maxAdults} />
               <Price pageClass={PageClass.Property} price={price} />
               <PropertyInside goods={goods} />
-              <PropertyHost host={activeOffer.host} description={description} />
-              <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
-                <UserReview reviews={reviews} />
-                <FormReview />
-              </section>
+              <PropertyHost host={host} description={description} />
+              <PropertyReviews reviews={reviews} offerId={activeOffer.id} />
             </div>
           </div>
-          <section className="property__map map"></section>
+          <Map activeCity={activeCity} activeCityOffers={offersList} activeCardId={activeOffer.id} mapClass={MapClass.Property}/>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <OffersList offers={nearPlacesOffers} cardClass={PageCardClass.Property} />
+              <OffersList offers={nearOffers} cardClass={PageCardClass.Property} />
             </div>
           </section>
         </div>
